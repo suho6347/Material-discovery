@@ -1,6 +1,5 @@
-from gensim.models import Word2Vec
+from gensim.models import Word2Vec, FastText
 from gensim.models.word2vec import LineSentence
-from gensim.models.phrases import Phrases, Phraser
 import gensim
 import logging
 import os
@@ -19,32 +18,11 @@ from eval_utils import DOIsDataLoader, callback
 
 
 if __name__ == "__main__":
-    """
-    Usage
-    
-    python 03-battery2vec.py \
-        --corpus ../../corpus/test_for_pretraining_corpus_only_properties.txt \
-        --formulas ../../corpus/test_for_pretraining_formula_only_properties.txt \
-        --model_name ./03-battery2vec+until23+el2+ssproperties \
-        -sg -keep_formula
-
-    python 03-battery2vec.py \
-        --corpus ../../corpus/corpus_with_improved_normalization/for_publishing/corpus_all.txt \
-        --formulas ../../corpus/corpus_with_improved_normalization/forpublishing/corpus_all_formula.txt \
-        --model_name ./pretraining_models/03-battery2vec+dedupl+improving_normalization+corpus_all \
-        -sg -keep_formula
-
-    python 03-battery2vec.py \
-        --corpus ../../corpus/mat2vec/mat2vec_corpus_v015_3/02-getPhrases-result.txt \
-        --formulas ../../corpus/mat2vec/mat2vec_corpus_v015_3/01-gertCorpus-result-formula.txt \
-        --model_name ./pretraining_models/03-mat2vec-results-v015_3_768d \
-        --size 768 \
-        -sg -keep_formula
-    """
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument("--corpus", required=True, help="The path to the corpus to train on.")
     parser.add_argument("--formulas", required=True, help="The path to the formulas to keep with. (requires 01-getCorpus-result-formula.txt)")
     parser.add_argument("--model_name", required=True, help="Name for saving the model (in the models folder).")
+    parser.add_argument("--model_type", choices=['word2vec', 'fasttext'], default="word2vec", help="The type of model, which determine how to train.")
     parser.add_argument("--epochs", default=30, help="Number of epochs.")
     parser.add_argument("--size", default=200, help="Size of the embedding.")
     parser.add_argument("--window", default=8, help="Context window size.")
@@ -65,7 +43,6 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     all_formula = []
-    # corpus 전처리하는 과정에서 화학식은 독립적으로 구성
     if args.keep_formula:
         try:
             dl = DOIsDataLoader(args.formulas)
@@ -142,7 +119,13 @@ if __name__ == "__main__":
         callbacks = [callback()]
     else:
         callbacks = []
-    my_model = Word2Vec(
+
+    model_type = args.model_type
+    model = None
+    if model_type == "word2vec": model=Word2Vec
+    elif model_type == "fasttext": model=FastText
+
+    my_model = model(
         sentences,
         # size=int(args.size),
         vector_size=int(args.size),
@@ -155,7 +138,6 @@ if __name__ == "__main__":
         alpha=float(args.alpha),
         sample=float(args.subsample),
         negative=int(args.negative),
-        compute_loss=True,
         sorted_vocab=True,
         batch_words=int(args.batch),
         # iter=int(args.epochs),

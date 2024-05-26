@@ -88,14 +88,9 @@ class Battery2Vec_Processor:
             _st += unicodedata.normalize("NFKC", _t)
         return _st
     
-    def _06_html_mapping(self, _text:str, version=3) -> str:
-        if version in [1, 2]:
-            _text = _text.replace("&gt;", "")
-            _text = _text.replace("&lt;", "")
-            _text = _text.replace("&amp;", "")
-        elif version == 3:
-            for k, v in self._html_mappings.items():
-                _text = _text.replace(k, v)
+    def _06_html_mapping(self, _text:str) -> str:
+        for k, v in self._html_mappings.items():
+            _text = _text.replace(k, v)
         return _text
     
     def _07_matscibert_mapping(self, _text:str) -> str:
@@ -184,14 +179,15 @@ class Battery2Vec_Processor:
             _text = _text.replace(pattern, replacement)
         return _text
     
-    def _11_16_mat2vec_normalize(self, _text:str, is_version_improving=True):
-        _text, _mat_list = self.text_process.process(_text, is_version_improving=is_version_improving)
+    def _11_16_mat2vec_normalize(self, _text:str, ):
+        _text, _mat_list = self.text_process.process(_text)
         return _text, _mat_list
     
     def process(self, ttl, abst, doi):
         ttl_mat_list  = []
         abst_mat_list = []
 
+        # preprocess title
         if ttl is not None:
             remove_flg = self._01_remove_paper(ttl)
             if remove_flg:
@@ -203,6 +199,7 @@ class Battery2Vec_Processor:
             ttl, ttl_mat_list = self._11_16_mat2vec_normalize(ttl)
         else: ttl = []
 
+        # preprocess abstract
         if abst is not None:
             abst = self.normalize(abst)
             abst = self._04_remove_under_bar(abst, doi)
@@ -210,39 +207,22 @@ class Battery2Vec_Processor:
             abst, abst_mat_list = self._11_16_mat2vec_normalize(abst)
         else: abst = []
 
-        corpus = ' '.join(ttl + abst) # list + list -> str
-        formulas = ttl_mat_list + abst_mat_list # list + list -> list
+        # concatenate title and abstract
+        corpus = ' '.join(ttl + abst)
+        # extract formulas
+        formulas = ttl_mat_list + abst_mat_list
 
         return corpus, formulas
     
-    def process_for_one_text(self, _text, version=3):
+    def process_for_one_text(self, _text, ):
+        _text = self.normalize(_text)
+        _text = self.normalize2(_text)
+        corpus, formulas = self._11_16_mat2vec_normalize(_text)
         
-        if version == 1:
-            """mat2vec re-production version"""
-            _text = self.normalize(_text)
-            corpus, formulas = self._11_16_mat2vec_normalize(_text, is_version_improving=False)
-        
-        elif version == 2:
-            """improving first version"""
-            _text = self._06_html_mapping(_text, version=version)
-            _text = self._08_connect_splecific_sentences(_text)
-            _text = self._02_remove_copyright_sentence(_text)
-            _text = self._03_remove_parenthetical_keyword(_text)
-            # _text = self._04_remove_under_bar(_text)
-            corpus, formulas = self._11_16_mat2vec_normalize(_text, is_version_improving=False)
-
-        elif version == 3:
-            """more improving version"""
-            _text = self.normalize(_text)
-            _text = self.normalize2(_text)
-            corpus, formulas = self._11_16_mat2vec_normalize(_text, is_version_improving=True)
-        
-        else:
-            print(f"version error : normalization_utils.py version : {version}")
 
         return ' '.join(corpus), formulas
 
-def main(version):
+def main():
     tmp_text1 = "hello world. &lt;"
     # result ->  hello world . <
     tmp_text2 = "This sentence is test sentence which has no phrase."
@@ -251,12 +231,10 @@ def main(version):
     # result ->  the gravimetric capacity of the battery is <nUm> mAh / g and current density jc is <nUm> mA / cm2 .
 
     b2vp = Battery2Vec_Processor()
-    print(b2vp.process_for_one_text(tmp_text1, version)[0])
-    print(b2vp.process_for_one_text(tmp_text2, version)[0])
-    print(b2vp.process_for_one_text(tmp_text3, version)[0])
+    print(b2vp.process_for_one_text(tmp_text1)[0])
+    print(b2vp.process_for_one_text(tmp_text2)[0])
+    print(b2vp.process_for_one_text(tmp_text3)[0])
     
 
 if __name__ == "__main__":
-    import sys
-    setting_version = int(sys.argv[1])
-    main(setting_version)
+    main()

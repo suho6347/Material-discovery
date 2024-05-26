@@ -3,28 +3,10 @@ from gensim.models.word2vec import LineSentence
 from gensim.models.phrases import Phrases, Phraser
 import regex
 import argparse
-import pdb
 import os
 from tqdm import tqdm
 from mat2vec_origin_training.helpers.utils import EpochSaver, compute_epoch_accuracies, \
     keep_simple_formula, load_obj, COMMON_TERMS, EXCLUDE_PUNCT, INCLUDE_PHRASES, EXCLUDE_TERMS
-"""
-requirements
-
-    pip install unidecode
-    pip install monty
-    pip install chemdataextractor
-    pip install pymatgen
-
-usage
-
-    python 02-getPhrases_v3.py --dir_name ../../corpus/SemanticScholar/year_3_1000/query_1C+rate_1922_2023
-    python 02-getPhrases_v3.py --dir_name ../../corpus/SemanticScholar/year_3_1000/query_1C+rate_1922_2023 --input_file_name 01-getCorpus-result-filtered.txt
-
-    python 02-getPhrases_v3.py \
-         --dir_name ../../corpus/corpus_with_improved_normalization/for_publishing/corpus_filtered_mat2vec+after2019+elbattery+ssbattery
-
-"""
 
 def exclude_words(phrasegrams, words):
     """Given a list of words, excludes those from the keys of the phrase dictionary."""
@@ -69,20 +51,13 @@ def wordgrams(sent, depth, pc, th, ct, et, ip, d=0):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-    parser.add_argument("--dir_name", required=True)
-    parser.add_argument("--input_file_name", default="01-getCorpus-result.txt")
+    parser.add_argument("--dir_name", default="./")
+    parser.add_argument("--input_file_name", default="01-getCorpus-result-filtered.txt")
     parser.add_argument("--input_formula_name", default="01-getCorpus-result-formula.txt")
     parser.add_argument("--output_file_name", default="02-getPhrases-result.txt")
-    parser.add_argument("--output_formula_name", default="02-getPhrases-result-formula.txt")
-    # parser.add_argument("--batch", default=10000, help="Minibatch size.")
     parser.add_argument("--phrase_depth", default=2, help="The number of passes to perform for phrase generation.")
     parser.add_argument("--phrase_count", default=10, help="Minimum number of occurrences for phrase to be considered.")
     parser.add_argument("--phrase_threshold", default=15.0, help="Phrase importance threshold.")
-    # parser.add_argument("-include_extra_phrases",
-    #                     action="store_true",
-    #                     help="If true, will look for all_ents.p and add extra phrases.")
-    # parser.add_argument("-keep_formula", action="store_true",
-    #                     help="If set, keeps simple chemical formula independent on count.")
     args = parser.parse_args()
 
 
@@ -90,8 +65,7 @@ if __name__ == "__main__":
     all_formula = []
     all_formula_count = {}
     formula_counts = []
-    cur_dir_path = os.path.dirname(os.path.realpath(__file__))
-    target_dir_paht = os.path.join(cur_dir_path, args.dir_name)
+    target_dir_paht = args.dir_name
     formula_file = open(os.path.join(target_dir_paht, args.input_formula_name), "r")
     for line in formula_file:
         words = line.strip().split()
@@ -117,40 +91,8 @@ if __name__ == "__main__":
     # Loading text and generating the phrases.
     sentences = LineSentence(os.path.join(target_dir_paht, args.input_file_name))
 
-
-
-    
-    # Pre-process everything to force the supplied phrases before it even goes to the phraser.
-    processed_sentences = sentences
-    # if args.include_extra_phrases:
-    #     phrases_by_length = dict()
-    #     for phrase in INCLUDE_PHRASES:
-    #         phrase_split = phrase.split("_")
-    #         if len(phrase_split) not in phrases_by_length:
-    #             phrases_by_length[len(phrase_split)] = [phrase]
-    #         else:
-    #             phrases_by_length[len(phrase_split)].append(phrase)
-    #     max_len = max(phrases_by_length.keys())
-
-    #     processed_sentences = []
-    #     for sentence in tqdm(sentences):
-    #         for cl in reversed(range(2, max_len + 1)):
-    #             repl_phrases = set(phrases_by_length[cl])
-    #             si = 0
-    #             while si <= len(sentence) - cl:
-    #                 if "_".join(sentence[si:cl + si]) in repl_phrases:
-    #                     sentence[si] = "$@$@$".join(sentence[si:cl + si])
-    #                     del(sentence[si + 1:cl + si])
-    #                 else:
-    #                     si += 1
-    #         processed_sentences.append(sentence)
-
-
-
-
-
     # Process sentences to force the extra phrases.
-    sentences, phraser = wordgrams(processed_sentences,
+    sentences, phraser = wordgrams(sentences,
                           depth=int(args.phrase_depth),
                           pc=int(args.phrase_count),
                           th=float(args.phrase_threshold),

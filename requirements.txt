@@ -1,0 +1,12 @@
+python=3.7
+pandas
+gensim
+regex
+unidecode
+monty
+conda-forge::monty
+conda-forge::chemdataextractor
+pymatgen
+typing_extensions
+transformers
+sklearn

@@ -149,7 +149,7 @@ class MaterialsTextProcessor:
         return toks
 
     def process(self, tokens, exclude_punct=False, convert_num=True, normalize_materials=True, remove_accents=True,
-                make_phrases=False, split_oxidation=True, is_version_improving=True):
+                make_phrases=False, split_oxidation=True):
         """Processes a pre-tokenized list of strings or a string.
 
         Selective lower casing, material normalization, etc.
@@ -213,7 +213,7 @@ class MaterialsTextProcessor:
                 tok = tok.lower()
 
             if remove_accents:
-                tok = self.remove_accent(tok, is_version_improving=is_version_improving)
+                tok = self.remove_accent(tok)
 
 
 
@@ -347,7 +347,7 @@ class MaterialsTextProcessor:
             return formula
 
     @staticmethod
-    def remove_accent(txt, is_version_improving=True):
+    def remove_accent(txt,):
         """Removes accents from a string.
 
         Args:
@@ -356,27 +356,15 @@ class MaterialsTextProcessor:
         Returns:
             The de-accented string.
         """
-        # before
-        # There is a problem with angstrom sometimes, so ignoring length 1 strings.
-        # return unidecode.unidecode(txt) if len(txt) > 1 else txt
-
-        # after
+        
         tmp_txt = ""
         for t in txt:
             ord_t = ord(t)
-            if 0xc0 <= ord_t <= 0xff: tmp_txt += unidecode.unidecode(t) # 라틴어-1 추가
-            elif 0x111 <= ord_t <= 0x17e: tmp_txt += unidecode.unidecode(t) # 라틴어 확장-A
-            elif 0x192 == ord_t: tmp_txt += unidecode.unidecode(t) # 라틴어 확장-B
-            elif 0x401 <= ord_t <= 0x451: tmp_txt += unidecode.unidecode(t) # 키릴 자모
+            if 0xc0 <= ord_t <= 0xff: tmp_txt += unidecode.unidecode(t) 
+            elif 0x111 <= ord_t <= 0x17e: tmp_txt += unidecode.unidecode(t) 
+            elif 0x192 == ord_t: tmp_txt += unidecode.unidecode(t) 
+            elif 0x401 <= ord_t <= 0x451: tmp_txt += unidecode.unidecode(t) 
+            elif (0x3041 <= ord_t <= 0xfa0b): tmp_txt += unidecode.unidecode(t)
             
-            # 개선 후
-            elif (0x3041 <= ord_t <= 0xfa0b) and is_version_improving: tmp_txt += unidecode.unidecode(t)
-            
-            # 개선 전
-            elif (0x3041 <= ord_t <= 0x30f6) and (not is_version_improving): tmp_txt += unidecode.unidecode(t) # 히라가나, 가타카나
-            elif (0x3400 <= ord_t <= 0x4db5) and (not is_version_improving): tmp_txt += unidecode.unidecode(t) # 한중일 통합한자 확장 A
-            elif (0x4e00 <= ord_t <= 0x9fa5) and (not is_version_improving): tmp_txt += unidecode.unidecode(t) # 한중일 통합한자
-            elif (0xf900 <= ord_t <= 0xfa0b) and (not is_version_improving): tmp_txt += unidecode.unidecode(t) # 한중일 호환한자
-
             else: tmp_txt += t
         return tmp_txt
