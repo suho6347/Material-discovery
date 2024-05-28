@@ -1,27 +1,38 @@
 # Material-discovery
 
-## how to preprocessing your corpus,
+## Set Up
+
+    conda create --name [env_name] python=3.7
+
+    conda activate [env_name]
+    
+    pip install --ignore-installed -r requirements.txt
+
+
+## How to preprocessing your corpus,
 toyset usage
 
-    `python preprocessor/preprocess.py`
+    python preprocessor/preprocess.py
 
-## how to classify abstract
+## How to classify abstract
 toyset usage
 
 need to get [model](https://drive.google.com/file/d/1YwunmwzJ1QlsunJAxeWwr_khMFcofx00/view?usp=drive_link)
 
 need to get [optimizer](https://drive.google.com/file/d/1H4O9bReCYqrbzpy3T5aTWxnsCUGZDgZ4/view?usp=drive_link)
 
-    `cd abstract_classifier/ingorganic`
+    cd abstract_classifier/inorganic
 
-    `python abst_filter.py --dir_name [dir_path]`
+    python abst_filter.py --dir_name ../../
 
-## how to make phrases
+## How to make phrases
 toyset usage
 
-    `python preprocessor/phraser.py`
+    cd ../../
 
-## how to pretrain model
+    python preprocessor/phraser.py
+
+## How to pretrain model
 toyset usage
 
-    `python pretraining/03-battery2vec.py --corpus 02-getPhrases-result.txt --formulas 01-getCorpus-result-formula.txt --model_name 03-result-model -sg -keep_formula`
+    python pretraining/03-battery2vec.py --corpus 02-getPhrases-result.txt --formulas 01-getCorpus-result-formula.txt --model_name 03-result-model -sg -keep_formula
