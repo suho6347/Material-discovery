@@ -56,5 +56,5 @@ python pretraining/03-battery2vec.py --corpus 02-getPhrases-result.txt \
 --model_name 03-result-model -sg -keep_formula
 
 
-# model_type: The type of model, which determine how to train.
+# model_type: Decide which model to use between `word2vec` and `fasttext`.
 ```
