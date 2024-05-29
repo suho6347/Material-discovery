@@ -14,7 +14,7 @@ parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFo
 parser.add_argument("--model", type=str, default="abstract_classifier/inorganic/MatBERT_16000", help="The path of the classifier model")
 parser.add_argument('--input_file_dir', type=str, default="output/")
 parser.add_argument("--postfix", type=str, default="result.txt", help="convert files only if with this postfix")
-parser.add_argument('--device', type=str, default="", help="Running Device")
+parser.add_argument('--device', type=str, default="0", help="Running Device")
 args = parser.parse_args()
 
 
