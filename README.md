@@ -41,17 +41,17 @@ python abstract_classifier/inorganic/abst_filter.py --input_file_dir output/ --d
 
 ## 3. Make Phrases
 ```
-python preprocessor/phraser.py --input_file output/01-getCorpus-result.txt \
---input_formula_file output/01-getCorpus-result.txt
+python preprocessor/phraser.py --input_file output/01-getCorpus-result-filtered.txt \
+--input_formula_file output/01-getCorpus-result-formula.txt
 ```
 <br/>
 
 ## 4. Pretraining the Model
 ```
-python pretraining/03-battery2vec.py --corpus output/01-getPhrases-result.txt \
+python pretraining/03-battery2vec.py --corpus output/02-getPhrases-result.txt \
 --formulas output/01-getCorpus-result-formula.txt \
 --model_type word2vec \
---model_name output/01-result-model -sg -keep_formula
+--model_name output/03-result-model -sg -keep_formula
 
 
 # model_type: Decide which model to use between `word2vec` and `fasttext`.
