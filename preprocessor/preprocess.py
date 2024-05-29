@@ -10,17 +10,17 @@ from tqdm import tqdm
 
 # init args
 parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-parser.add_argument("--input_dir", default="./")
-parser.add_argument("--input_file_name", default="toyset.txt")
-parser.add_argument("--output_dir", default="./")
-parser.add_argument("--output_file_name", default="01-getCorpus-result.txt")
+parser.add_argument("--input_file", default="dataset/toyset.txt")
+parser.add_argument("--output_file", default="01-getCorpus-result.txt")
 parser.add_argument("--output_formula_name", default="01-getCorpus-result-formula.txt")
 args = parser.parse_args()
 
 #init
-test_write_file = open(os.path.join(args.output_dir, args.output_file_name), "w")
-test_formulae_write_file = open(os.path.join(args.output_dir, args.output_formula_name), "w")
-test_input_file = open(os.path.join(args.input_dir, args.input_file_name), "r")
+test_input_file = open(args.input_file_name, "r")
+
+test_write_file = open(os.path.join("./output", args.output_file_name), "w")
+test_formulae_write_file = open(os.path.join("./output", args.output_formula_name), "w")
+
 
 battery2vec_processor = Battery2Vec_Processor()
 
