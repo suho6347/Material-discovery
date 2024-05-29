@@ -3,13 +3,16 @@
 ## Set Up
 
 ```
-conda create --name [env_name] python=3.7
+conda create --name [env_name] python=3.8
 ```
 ```
 conda activate [env_name]
 ```
 ```
 pip install --ignore-installed -r requirements.txt
+```
+```
+cde data download
 ```
 <br/>
 
@@ -31,7 +34,7 @@ Notice) Please place the *model* and *optimizer* in the <code>abstract_classifie
 cd abstract_classifier/inorganic
 ```
 ```
-python abst_filter.py --dir_name ../../
+python abst_filter.py --dir_name ../../output
 
 
 # dir_name: Set the location of the .txt file you want to classify.
@@ -44,16 +47,16 @@ python abst_filter.py --dir_name ../../
 cd ../../
 ```
 ```
-python preprocessor/phraser.py
+python preprocessor/phraser.py --dir_name output
 ```
 <br/>
 
 ## 4. Pretraining the Model
 ```
-python pretraining/03-battery2vec.py --corpus 02-getPhrases-result.txt \
---formulas 01-getCorpus-result-formula.txt \
+python pretraining/03-battery2vec.py --corpus output/02-getPhrases-result.txt \
+--formulas output/01-getCorpus-result-formula.txt \
 --model_type word2vec \
---model_name 03-result-model -sg -keep_formula
+--model_name output/03-result-model -sg -keep_formula
 
 
 # model_type: Decide which model to use between `word2vec` and `fasttext`.
