@@ -52,8 +52,9 @@ python preprocessor/phraser.py
 ```
 python pretraining/03-battery2vec.py --corpus 02-getPhrases-result.txt \
 --formulas 01-getCorpus-result-formula.txt \
+--model_type word2vec \
 --model_name 03-result-model -sg -keep_formula
 
 
-# dir_name: Set the location of the .txt file you want to classify.
+# model_type: The type of model, which determine how to train.
 ```
