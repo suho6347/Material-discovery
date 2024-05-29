@@ -51,7 +51,7 @@ python preprocessor/phraser.py --input_file output/01-getCorpus-result.txt \
 python pretraining/03-battery2vec.py --corpus output/01-getPhrases-result.txt \
 --formulas output/01-getCorpus-result-formula.txt \
 --model_type word2vec \
---model_name output/03-result-model -sg -keep_formula
+--model_name output/01-result-model -sg -keep_formula
 
 
 # model_type: Decide which model to use between `word2vec` and `fasttext`.
