@@ -70,4 +70,4 @@ for fname in tqdm(files, position=0, leave=True, bar_format="{l_bar}{bar:20}{r_b
         fw.writelines(filtered)
         fw.close()
 
-os.rmdir(tmp_trainer)
+os.rmdir("tmp_trainer")
