@@ -51,10 +51,9 @@ def wordgrams(sent, depth, pc, th, ct, et, ip, d=0):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-    parser.add_argument("--dir_name", default="./")
-    parser.add_argument("--input_file_name", default="01-getCorpus-result-filtered.txt")
-    parser.add_argument("--input_formula_name", default="01-getCorpus-result-formula.txt")
-    parser.add_argument("--output_file_name", default="02-getPhrases-result.txt")
+    parser.add_argument("--input_file", default="output/01-getCorpus-result-filtered.txt")
+    parser.add_argument("--input_formula_file", default="output/01-getCorpus-result-formula.txt")
+    parser.add_argument("--output_file", default="02-getPhrases-result.txt")
     parser.add_argument("--phrase_depth", default=2, help="The number of passes to perform for phrase generation.")
     parser.add_argument("--phrase_count", default=10, help="Minimum number of occurrences for phrase to be considered.")
     parser.add_argument("--phrase_threshold", default=15.0, help="Phrase importance threshold.")
@@ -65,8 +64,7 @@ if __name__ == "__main__":
     all_formula = []
     all_formula_count = {}
     formula_counts = []
-    target_dir_paht = args.dir_name
-    formula_file = open(os.path.join(target_dir_paht, args.input_formula_name), "r")
+    formula_file = open(args.input_formula_file, "r")
     for line in formula_file:
         words = line.strip().split()
         all_formula.append(words[0])
@@ -74,8 +72,8 @@ if __name__ == "__main__":
     formula_file.close()
 
     # get corpus and check formulas over min-count
-    with open(os.path.join(target_dir_paht, args.input_file_name), "r") as f:
-        for line in f:
+    with open(args.input_file, "r") as fr:
+        for line in fr:
             line = line.strip().split()
             for word in line:
                 if word in all_formula_count:
@@ -84,13 +82,14 @@ if __name__ == "__main__":
     for k, v in all_formula_count.items():
         if v > args.phrase_count:
             all_formula.append(k)
+    
     processed_formulas = all_formula
     print("min count formula size : ", len(processed_formulas))
 
 
     # Loading text and generating the phrases.
-    sentences = LineSentence(os.path.join(target_dir_paht, args.input_file_name))
-
+    sentences = LineSentence(args.input_file)
+    
     # Process sentences to force the extra phrases.
     sentences, phraser = wordgrams(sentences,
                           depth=int(args.phrase_depth),
@@ -101,7 +100,7 @@ if __name__ == "__main__":
                           ip=INCLUDE_PHRASES)
     # phraser.save(os.path.join("models", args.model_name + "_phraser.pkl"))
 
-    output_corpus_file = open(os.path.join(target_dir_paht, args.output_file_name), "w")
+    output_corpus_file = open(os.path.join(os.path.dirname(args.input_file), args.output_file), "w")
     for s in sentences:
         output_corpus_file.write(' '.join(s).strip())
         output_corpus_file.write("\n")
