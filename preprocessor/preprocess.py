@@ -12,7 +12,7 @@ from tqdm import tqdm
 parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 parser.add_argument("--input_file", default="dataset/toyset.txt")
 parser.add_argument("--output_file", default="01-getCorpus-result.txt")
-parser.add_argument("--output_formula_name", default="01-getCorpus-result-formula.txt")
+parser.add_argument("--output_formula_file", default="01-getCorpus-result-formula.txt")
 args = parser.parse_args()
 
 #init
