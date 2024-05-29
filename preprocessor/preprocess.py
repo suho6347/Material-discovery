@@ -16,7 +16,7 @@ parser.add_argument("--output_formula_file", default="01-getCorpus-result-formul
 args = parser.parse_args()
 
 #init
-test_input_file = open(args.input_file_name, "r")
+test_input_file = open(args.input_file, "r")
 
 output_dir = "./output"
 os.makedirs(output_dir, exist_ok=True)
