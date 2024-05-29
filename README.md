@@ -31,13 +31,10 @@ and [optimizer](https://drive.google.com/file/d/1H4O9bReCYqrbzpy3T5aTWxnsCUGZDgZ
 
 Notice) Please place the *model* and *optimizer* in the <code>abstract_classifier/inorganic/MatBERT_16000</code>.
 ```
-cd abstract_classifier/inorganic
-```
-```
-python abst_filter.py --dir_name ../../output
+python abstract_classifier/inorganic/abst_filter.py --input_file_dir output/ --device 0
 
 
-# dir_name: Set the location of the .txt file you want to classify.
+# input_file_dir: Set the location of the '-result.txt' file you want to classify.
 ```
 <br/>
     
