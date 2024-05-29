@@ -16,7 +16,8 @@ pip install --ignore-installed -r requirements.txt
 ## 1. Preprocess the Corpus
 ```
 python preprocessor/preprocess.py --input_file dataset/toyset.txt \
---ouptut_file 01-getCorpus-result.txt --output_formula_file 01-getCorpus-result-formula.txt
+--ouptut_file 01-getCorpus-result.txt \
+--output_formula_file 01-getCorpus-result-formula.txt
 ```
 <br/>
 
