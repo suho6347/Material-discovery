@@ -41,7 +41,8 @@ python abstract_classifier/inorganic/abst_filter.py --input_file_dir output/ --d
 
 ## 3. Make Phrases
 ```
-python preprocessor/phraser.py --input_file output/01-getCorpus-result.txt --input_formula_file output/01-getCorpus-result.txt
+python preprocessor/phraser.py --input_file output/01-getCorpus-result.txt \
+--input_formula_file output/01-getCorpus-result.txt
 ```
 <br/>
 
