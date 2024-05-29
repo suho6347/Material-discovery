@@ -24,7 +24,7 @@ python preprocessor/preprocess.py
 In advance, you should get [model](https://drive.google.com/file/d/1YwunmwzJ1QlsunJAxeWwr_khMFcofx00/view?usp=drive_link)
 and [optimizer](https://drive.google.com/file/d/1H4O9bReCYqrbzpy3T5aTWxnsCUGZDgZ4/view?usp=drive_link).
 
-Notice) Please place the *model* and *optimizer* in the <code>abstract_classifier/inorganic/</code> folder.
+Notice) Please place the *model* and *optimizer* in the <code>abstract_classifier/inorganic/</code>.
 ```
 cd abstract_classifier/inorganic
 ```
