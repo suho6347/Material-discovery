@@ -53,7 +53,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument("--input_file", default="output/01-getCorpus-result-filtered.txt")
     parser.add_argument("--input_formula_file", default="output/01-getCorpus-result-formula.txt")
-    parser.add_argument("--output_file", default="02-getPhrases-result.txt")
+    parser.add_argument("--output_file", default="01-getPhrases-result.txt")
     parser.add_argument("--phrase_depth", default=2, help="The number of passes to perform for phrase generation.")
     parser.add_argument("--phrase_count", default=10, help="Minimum number of occurrences for phrase to be considered.")
     parser.add_argument("--phrase_threshold", default=15.0, help="Phrase importance threshold.")
