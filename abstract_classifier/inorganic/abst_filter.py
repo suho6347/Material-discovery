@@ -69,4 +69,5 @@ for fname in tqdm(files, position=0, leave=True, bar_format="{l_bar}{bar:20}{r_b
     with open(output_file, 'w') as fw:
         fw.writelines(filtered)
         fw.close()
-    
+
+os.rmdir(tmp_trainer)
