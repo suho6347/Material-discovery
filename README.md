@@ -48,7 +48,7 @@ python preprocessor/phraser.py --input_file output/01-getCorpus-result.txt \
 
 ## 4. Pretraining the Model
 ```
-python pretraining/03-battery2vec.py --corpus output/02-getPhrases-result.txt \
+python pretraining/03-battery2vec.py --corpus output/01-getPhrases-result.txt \
 --formulas output/01-getCorpus-result-formula.txt \
 --model_type word2vec \
 --model_name output/03-result-model -sg -keep_formula
