@@ -20,8 +20,8 @@ test_input_file = open(args.input_file, "r")
 
 output_dir = "./output"
 os.makedirs(output_dir, exist_ok=True)
-test_write_file = open(os.path.join(output_dir, args.output_file_name), "w")
-test_formulae_write_file = open(os.path.join(output_dir, args.output_formula_name), "w")
+test_write_file = open(os.path.join(output_dir, args.output_file), "w")
+test_formulae_write_file = open(os.path.join(output_dir, args.output_formula_file), "w")
 
 
 battery2vec_processor = Battery2Vec_Processor()
